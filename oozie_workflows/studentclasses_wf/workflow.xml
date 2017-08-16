@@ -1,0 +1,39 @@
+<workflow-app name="studentclassesAction" xmlns="uri:oozie:workflow:0.4">
+  <start to="shellAction"/>
+    <action name="shellAction">
+      <shell xmlns="uri:oozie:shell-action:0.2">
+        <job-tracker>${jobTracker}</job-tracker>
+        <name-node>${nameNode}</name-node>
+        <exec>studentclasses_script.sh</exec>
+		<env-var>HADOOP_USER_NAME=${wf:user()}</env-var>
+        <file>/user/prod_datalake/crg-apps/studentclasses_wf/studentclasses_script.sh#studentclasses_script.sh</file>
+        <file>/user/prod_datalake/crg-apps/studentclasses_wf/historyLoadCassandra-0.0.1-SNAPSHOT-jar-with-dependencies.jar#historyLoadCassandra-0.0.1-SNAPSHOT-jar-with-dependencies.jar</file>
+        <capture-output/>
+      </shell>
+      <ok to="end-email"/>
+      <error to="error-email"/>
+  </action>
+  <action name="end-email">
+<email xmlns="uri:oozie:email-action:0.1">
+<to>YogaPhani@creighton.edu</to>
+<subject>WF ${wf:id()} Successful</subject>
+<body>Student Classes Job Successfully Completed.</body>
+</email>
+<ok to="end"/>
+<error to="killAction"/>
+</action>
+ <action name="error-email">
+<email xmlns="uri:oozie:email-action:0.1">
+<to>YogaPhani@creighton.edu</to>
+<subject>WF ${wf:id()} Failed</subject>
+<body>Student Classes Job Failed.[${wf:errorMessage(wf:lastErrorNode())}]</body>
+</email>
+<ok to="end"/>
+<error to="killAction"/>
+</action>
+  
+  <kill name="killAction">
+    <message>"Killed job due to error"</message>
+  </kill>
+  <end name="end"/>
+</workflow-app>

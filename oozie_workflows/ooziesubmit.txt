@@ -1,0 +1,9 @@
+oozie job -oozie http://localhost:11000/oozie -config /home/prod_datalake/oozie_workflows/studentprofile_wf/job.properties -submit
+
+oozie job -oozie http://localhost:11000/oozie -config /home/prod_datalake/oozie_workflows/studentclasses_wf/job.properties -submit
+ 
+oozie job -oozie http://localhost:11000/oozie -config /home/prod_datalake/oozie_workflows/staffinfo_wf/job.properties -submit
+
+oozie job -oozie http://localhost:11000/oozie -config /home/prod_datalake/oozie_workflows/dirsearch_wf/job.properties -submit
+
+oozie job -oozie http://localhost:11000/oozie -config /home/prod_datalake/oozie_workflows/facultylearn_wf/job.properties -submit
